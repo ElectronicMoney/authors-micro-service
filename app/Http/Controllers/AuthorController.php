@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Traits\ApiResponser;
+use App\Models\Author;
 
 class AuthorController extends Controller
 {
@@ -22,7 +24,8 @@ class AuthorController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index() {
-
+        $authors = Author::paginate(10);
+        return $this->successResponse($authors);
     }
 
     /**
@@ -32,7 +35,28 @@ class AuthorController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
+        //The rules
+        $rules = [
+            'name' => 'required|max:255',
+            'gender' => 'required|in:male,female',
+            'country' => 'required|max:255',
+        ];
 
+        //validate the request
+       $this->validate($request, $rules);
+
+        // $author = Author::create($request->all());
+        // return $this->successResponse($author, Response::HTTP_CREATED);
+
+        //instantiate the Author
+        $author = new Author();
+        $author->name    = $request->input('name');
+        $author->gender  = $request->input('gender');
+        $author->country = $request->input('country');
+        //Save the author
+        $author->save();
+        //Return the new author
+        return $this->successResponse($author, Response::HTTP_CREATED);
     }
 
     /**
@@ -42,7 +66,8 @@ class AuthorController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($author) {
-
+        $author = Author::findOrFail($author);
+        return $this->successResponse($author);
     }
 
     /**
