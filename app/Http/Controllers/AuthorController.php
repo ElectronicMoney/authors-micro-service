@@ -120,7 +120,11 @@ class AuthorController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($author) {
-
+        //find the author using its id
+        $author = Author::findOrFail($author);
+        $author->delete();
+        //Return the new author
+        return $this->successResponse($author);
     }
 
 }
