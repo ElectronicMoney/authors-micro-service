@@ -24,7 +24,7 @@ class AuthorController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $authors = Author::paginate(10);
+        $authors = Author::all();
         return $this->successResponse($authors);
     }
 
