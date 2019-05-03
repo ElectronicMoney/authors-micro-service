@@ -20,10 +20,10 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        // AuthorizationException::class,
-        // HttpException::class,
-        // ModelNotFoundException::class,
-        // ValidationException::class,
+        AuthorizationException::class,
+        HttpException::class,
+        ModelNotFoundException::class,
+        ValidationException::class,
     ];
 
     /**
@@ -79,7 +79,7 @@ class Handler extends ExceptionHandler
             return parent::render($request, $exception);
         }
 
-        //If there is any other errpr, return inernal server error
+        //If there is no any other error, return inernal server error
         return $this->errorResponse('Unexpected Error; try again later!', Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 }
